@@ -123,10 +123,18 @@ This includes imports from [typeshed](https://github.com/python/typeshed/).
 
 ## Tests
 
-Just run:
+Prepare poetry env:
 
 ```
-python setup.py test
+poetry install
+poetry shell
+```
+
+Run tests:
+
+```
+python -m pytest tests/
+
 ```
 
 ## OMG, this is Python 3 only!
