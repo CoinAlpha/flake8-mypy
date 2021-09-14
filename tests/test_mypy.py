@@ -70,14 +70,14 @@ class MypyTestCase(unittest.TestCase):
                 T484(5, 1, vars=('Missing return statement',)),
                 T484(
                     10,
-                    5,
+                    12,
                     vars=(
                         'Incompatible return value type (got "int", expected "str")',
                     ),
                 ),
                 T484(
                     10,
-                    12,
+                    26,
                     vars=(
                         'Unsupported operand types for + ("int" and "str")',
                     ),
@@ -94,7 +94,7 @@ class MypyTestCase(unittest.TestCase):
             self.errors(
                 T484(
                     6,
-                    5,
+                    12,
                     vars=(
                         'Incompatible return value type '
                         '(got "UserDict[<nothing>, <nothing>]", '

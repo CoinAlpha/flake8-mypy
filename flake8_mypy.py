@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 import re
 from tempfile import NamedTemporaryFile, TemporaryDirectory
-import time
 import traceback
 from typing import (
     Any,
@@ -114,7 +113,7 @@ class MypyChecker:
 
     tree = attr.ib(default=None)
     filename = attr.ib(default='(none)')
-    lines = attr.ib(default=[])  # type: List[int]
+    lines = attr.ib(default=[])  # type: List[str]
     options = attr.ib(default=None)
     visitor = attr.ib(default=attr.Factory(lambda: TypingVisitor))
 
@@ -179,8 +178,8 @@ class MypyChecker:
                 yield self.adapt_error(e)
 
             for line in stderr.splitlines():
-                    last_t499 += 1
-                    yield self.adapt_error(T499(last_t499, 0, vars=(line,)))
+                last_t499 += 1
+                yield self.adapt_error(T499(last_t499, 0, vars=(line,)))
 
     @classmethod
     def adapt_error(cls, e: Any) -> _Flake8Error:
