@@ -34,3 +34,24 @@ def test_mypy_config_load(flake8_path):
     assert expected in result.out_lines
 
 
+def test_simple_type_issue(flake8_path):
+    (flake8_path / "setup.cfg").write_text(
+        dedent(
+            """\
+            [flake8]
+            select = T4
+            """
+        )
+    )
+    (flake8_path / "example.py").write_text(
+        dedent(
+            """\
+            def foo(a: int, b: int) -> int:
+                return "xxx"
+            """
+        )
+    )
+    result = flake8_path.run_flake8()
+    assert result.exit_code == 1
+    expected = './example.py:2:13: T484 Incompatible return value type (got "str", expected "int")'
+    assert expected in result.out_lines
