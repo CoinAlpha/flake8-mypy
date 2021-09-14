@@ -4,6 +4,9 @@ version = "17.8.0"
 description = ""
 authors = ["Vladimir Kamarzin <vvk@vvk.pp.ru>"]
 
+[tool.poetry.plugins."flake8.extension"]
+T4 = "flake8_mypy:MypyChecker"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 
