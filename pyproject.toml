@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flake8-mypy"
-version = "17.8.0"
+version = "17.8.1"
 description = ""
 authors = ["Vladimir Kamarzin <vvk@vvk.pp.ru>"]
 
