@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import ast
+import argparse
 from collections import namedtuple
 from functools import partial
 import itertools
@@ -203,6 +204,12 @@ class MypyChecker:
             parse_from_config=True,
             help="path to a custom mypy configuration file",
         )
+
+    @classmethod
+    def parse_options(
+        cls, _: "flake8.options.manager.OptionManager", options: argparse.Namespace, *args
+    ) -> None:
+        cls.options = options
 
     def make_error(self, line: str, regex: Pattern) -> Error:
         m = regex.match(line)
