@@ -1,6 +1,7 @@
 # flake8-mypy
 
-[![Build Status](https://travis-ci.org/ambv/flake8-mypy.svg?branch=master)](https://travis-ci.org/ambv/flake8-mypy)
+[![test](https://github.com/CoinAlpha/flake8-mypy/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/CoinAlpha/flake8-mypy/actions/workflows/test.yml)
+
 
 A plugin for [Flake8](http://flake8.pycqa.org/) integrating
 [mypy](http://mypy-lang.org/). The idea is to enable limited type
