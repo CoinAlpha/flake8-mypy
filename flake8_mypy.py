@@ -1,26 +1,16 @@
 #!/usr/bin/env python3
-import ast
 import argparse
-from collections import namedtuple
-from functools import partial
+import ast
 import itertools
 import logging
 import os
-from pathlib import Path
 import re
-from tempfile import NamedTemporaryFile, TemporaryDirectory
 import traceback
-from typing import (
-    Any,
-    Iterator,
-    List,
-    Optional,
-    Pattern,
-    Tuple,
-    Type,
-    TYPE_CHECKING,
-    Union,
-)
+from collections import namedtuple
+from functools import partial
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import (Any, Iterator, List, Optional, Pattern, TYPE_CHECKING, Tuple, Type, Union)
 
 import attr
 import mypy.api
@@ -132,22 +122,28 @@ class MypyChecker:
         # unexpected clashes with other .py and .pyi files in the same original
         # directory.
         with TemporaryDirectory(prefix='flake8mypy_') as d:
-            file = NamedTemporaryFile(
-                'w',
-                encoding='utf8',
-                prefix='tmpmypy_',
-                suffix='.py',
-                dir=d,
-                delete=False,
-            )
-            try:
-                self.filename = file.name
+            rel_path = Path(self.filename)
+            abs_tmp_path = Path(d) / rel_path
+
+            # Create same directory structure relative to type-checked file root
+            abs_tmp_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create matching __init__ files, so mypy can capture same module structure
+            for parent in abs_tmp_path.parents:
+                try:
+                    parent_rel = parent.relative_to(d)
+                except ValueError:
+                    break
+
+                if (parent_rel / '__init__.py').exists():
+                    (parent / '__init__.py').touch()
+
+            with abs_tmp_path.open(mode='w', encoding='utf8') as file:
                 for line in self.lines:
                     file.write(line)
-                file.close()
-                yield from self._run()
-            finally:
-                os.remove(file.name)
+
+            self.filename = str(abs_tmp_path)
+            yield from self._run()
 
     def _run(self) -> Iterator[_Flake8Error]:
         mypy_cmdline = self.build_mypy_cmdline(self.filename, self.options.mypy_config)
